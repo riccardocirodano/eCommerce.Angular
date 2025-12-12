@@ -1,0 +1,57 @@
+<mat-toolbar color="primary">
+  <span>eCommerce Dashboard</span>
+  <span class="spacer"></span>
+  <button mat-button (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    Logout
+  </button>
+</mat-toolbar>
+
+<div class="dashboard-container">
+  <div class="welcome-section">
+    <h1>Welcome, {{ currentUser?.personName }}! 🎉</h1>
+    <p>You have successfully logged in to your eCommerce account.</p>
+  </div>
+
+  <div class="cards-container">
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-card-title>Profile Information</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="info-row">
+          <strong>Name:</strong>
+          <span>{{ currentUser?.personName }}</span>
+        </div>
+        <div class="info-row">
+          <strong>Email:</strong>
+          <span>{{ currentUser?.email }}</span>
+        </div>
+        <div class="info-row">
+          <strong>Gender:</strong>
+          <span>{{ currentUser?.gender }}</span>
+        </div>
+        <div class="info-row">
+          <strong>User ID:</strong>
+          <span>{{ currentUser?.userID }}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-card-title>Quick Actions</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Your microservices backend is ready to grow! As you add more features to your backend, you can extend this dashboard with:</p>
+        <ul>
+          <li>Product management</li>
+          <li>Order tracking</li>
+          <li>User profile settings</li>
+          <li>Shopping cart</li>
+          <li>And much more!</li>
+        </ul>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

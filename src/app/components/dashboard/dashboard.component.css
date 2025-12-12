@@ -1,0 +1,73 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.dashboard-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.welcome-section {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.welcome-section h1 {
+  color: #667eea;
+  margin-bottom: 8px;
+}
+
+.welcome-section p {
+  color: #666;
+  font-size: 16px;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.info-card {
+  padding: 16px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-row strong {
+  color: #333;
+}
+
+.info-row span {
+  color: #666;
+}
+
+ul {
+  margin-top: 16px;
+  padding-left: 20px;
+}
+
+ul li {
+  margin-bottom: 8px;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 16px;
+  }
+
+  .cards-container {
+    grid-template-columns: 1fr;
+  }
+}
