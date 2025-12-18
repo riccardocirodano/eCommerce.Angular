@@ -62,10 +62,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ecommerce-auth-app:build:production"
+              "buildTarget": "ecommerce:build:production"
             },
             "development": {
-              "buildTarget": "ecommerce-auth-app:build:development"
+              "buildTarget": "ecommerce:build:development"
             }
           },
           "defaultConfiguration": "development"
