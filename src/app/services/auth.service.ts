@@ -71,6 +71,46 @@ export class AuthService {
     return null;
   }
 
+  getUserRoles(): string[] {
+    const token = this.getToken();
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.role ? [payload.role] : payload.roles || [];
+      } catch (error) {
+        console.error('Error decoding token:', error);
+        return [];
+      }
+    }
+    return [];
+  }
+
+  hasRole(role: string): boolean {
+    return this.getUserRoles().includes(role);
+  }
+
+  isAdmin(): boolean {
+    return this.hasRole('Admin');
+  }
+
+  isManager(): boolean {
+    return this.hasRole('Manager');
+  }
+
+  isUser(): boolean {
+    return this.hasRole('User');
+  }
+
+  getUserDashboardRoute(): string {
+    if (this.isAdmin()) {
+      return '/admin-dashboard';
+    } else if (this.isManager()) {
+      return '/manager-dashboard';
+    } else {
+      return '/user-dashboard';
+    }
+  }
+
   private setAuthData(response: AuthenticationResponse): void {
     if (this.isBrowser) {
       localStorage.setItem(this.TOKEN_KEY, response.token);

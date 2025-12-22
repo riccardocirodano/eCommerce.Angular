@@ -1,0 +1,73 @@
+<div class="user-dashboard">
+  <mat-toolbar color="primary">
+    <mat-icon>dashboard</mat-icon>
+    <span>User Dashboard</span>
+    <span class="toolbar-spacer"></span>
+    <span *ngIf="currentUser">Welcome, {{currentUser.personName}}</span>
+    <button mat-icon-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <div class="dashboard-content">
+    <mat-grid-list cols="3" rowHeight="200px" gutterSize="16px">
+      <mat-grid-tile colspan="1">
+        <mat-card class="feature-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>person</mat-icon>
+            <mat-card-title>Profile</mat-card-title>
+            <mat-card-subtitle>Manage your account</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Update your personal information and preferences.</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary">View Profile</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan="1">
+        <mat-card class="feature-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>shopping_cart</mat-icon>
+            <mat-card-title>Orders</mat-card-title>
+            <mat-card-subtitle>Your purchase history</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>View and track your orders and purchases.</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary">View Orders</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan="1">
+        <mat-card class="feature-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>settings</mat-icon>
+            <mat-card-title>Settings</mat-card-title>
+            <mat-card-subtitle>Account preferences</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Customize your account settings and preferences.</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary">Settings</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-card class="welcome-card">
+      <mat-card-header>
+        <mat-card-title>Welcome to your Dashboard!</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Hello <strong>{{currentUser?.personName}}</strong>! You're logged in as a <strong>{{currentUser?.roles?.[0] || 'User'}}</strong>.</p>
+        <p>Use the cards above to navigate through your account features.</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

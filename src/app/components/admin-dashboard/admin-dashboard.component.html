@@ -1,0 +1,117 @@
+<div class="admin-dashboard">
+  <mat-toolbar color="primary">
+    <mat-icon>admin_panel_settings</mat-icon>
+    <span>Admin Dashboard</span>
+    <span class="toolbar-spacer"></span>
+    <span *ngIf="currentUser">Welcome, {{currentUser.personName}}</span>
+    <button mat-icon-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <div class="dashboard-content" *ngIf="!isLoading">
+    <mat-grid-list cols="4" rowHeight="200px" gutterSize="16px">
+      <!-- Stats Cards -->
+      <mat-grid-tile colspan="1">
+        <mat-card class="stat-card">
+          <mat-card-header>
+            <mat-card-title>Total Users</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="stat-value">
+              {{dashboardStats?.totalUsers || 0}}
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan="1">
+        <mat-card class="stat-card">
+          <mat-card-header>
+            <mat-card-title>Admins</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="stat-value">
+              {{dashboardStats?.usersByRole?.Admin || 0}}
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan="1">
+        <mat-card class="stat-card">
+          <mat-card-header>
+            <mat-card-title>Managers</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="stat-value">
+              {{dashboardStats?.usersByRole?.Manager || 0}}
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan="1">
+        <mat-card class="stat-card">
+          <mat-card-header>
+            <mat-card-title>Users</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="stat-value">
+              {{dashboardStats?.usersByRole?.User || 0}}
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+
+      <!-- Quick Actions -->
+      <mat-grid-tile colspan="2">
+        <mat-card class="action-card">
+          <mat-card-header>
+            <mat-card-title>Quick Actions</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <button mat-raised-button color="primary" (click)="navigateToUserManagement()">
+              <mat-icon>people</mat-icon>
+              Manage Users
+            </button>
+            <button mat-raised-button color="accent" (click)="loadUsers()">
+              <mat-icon>refresh</mat-icon>
+              Refresh Data
+            </button>
+            <button mat-raised-button (click)="navigateToSettings()">
+              <mat-icon>settings</mat-icon>
+              System Settings
+            </button>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+
+      <!-- Recent Users -->
+      <mat-grid-tile colspan="2">
+        <mat-card class="recent-users-card">
+          <mat-card-header>
+            <mat-card-title>Recent Users</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-list *ngIf="dashboardStats?.recentUsers?.length > 0">
+              <mat-list-item *ngFor="let user of dashboardStats.recentUsers">
+                <mat-icon matListItemIcon>person</mat-icon>
+                <h4 matListItemTitle>{{user.personName}}</h4>
+                <p matListItemLine>{{user.email}}</p>
+              </mat-list-item>
+            </mat-list>
+            <p *ngIf="!dashboardStats?.recentUsers?.length" class="no-data">
+              No recent users
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-icon class="loading-spinner">refresh</mat-icon>
+    <p>Loading dashboard data...</p>
+  </div>
+</div>

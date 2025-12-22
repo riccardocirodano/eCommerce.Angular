@@ -8,6 +8,7 @@ export interface RegisterRequest {
   password: string | null;
   personName: string | null;
   gender: Gender;
+  roleName: string;
 }
 
 export interface AuthenticationResponse {
@@ -17,10 +18,17 @@ export interface AuthenticationResponse {
   gender: string | null;
   token: string;
   success: boolean;
+  roles?: string[];
 }
 
 export enum Gender {
   Male = 0,
   Female = 1,
   Other = 2
+}
+
+export enum UserRole {
+  Admin = 'Admin',
+  User = 'User',
+  Manager = 'Manager'
 }

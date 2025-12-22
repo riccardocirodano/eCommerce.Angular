@@ -57,7 +57,9 @@ export class LoginComponent {
         this.isLoading = false;
         if (response.success) {
           this.snackBar.open('Login successful!', 'Close', { duration: 3000 });
-          this.router.navigate(['/dashboard']);
+          // Navigate to role-specific dashboard
+          const dashboardRoute = this.authService.getUserDashboardRoute();
+          this.router.navigate([dashboardRoute]);
         } else {
           this.snackBar.open('Login failed. Please try again.', 'Close', { duration: 3000 });
         }

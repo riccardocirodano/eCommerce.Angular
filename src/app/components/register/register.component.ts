@@ -10,7 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/auth.service';
-import { RegisterRequest, Gender } from '../../models/auth.models';
+import { RegisterRequest, Gender, UserRole } from '../../models/auth.models';
 
 @Component({
   selector: 'app-register',
@@ -39,6 +39,12 @@ export class RegisterComponent {
     { value: Gender.Other, label: 'Other' }
   ];
 
+  roles = [
+    { value: UserRole.User, label: 'User' },
+    { value: UserRole.Manager, label: 'Manager' },
+    { value: UserRole.Admin, label: 'Admin' }
+  ];
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -49,7 +55,8 @@ export class RegisterComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       personName: ['', [Validators.required, Validators.minLength(2)]],
-      gender: [Gender.Male, [Validators.required]]
+      gender: [Gender.Male, [Validators.required]],
+      roleName: [UserRole.User, [Validators.required]]
     });
   }
 

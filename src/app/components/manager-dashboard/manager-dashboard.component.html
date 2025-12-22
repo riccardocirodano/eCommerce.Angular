@@ -1,0 +1,121 @@
+<div class="manager-dashboard">
+  <mat-toolbar color="accent">
+    <mat-icon>supervisor_account</mat-icon>
+    <span>Manager Dashboard</span>
+    <span class="toolbar-spacer"></span>
+    <span *ngIf="currentUser">Welcome, {{currentUser.personName}}</span>
+    <button mat-icon-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <div class="dashboard-content">
+    <mat-grid-list cols="3" rowHeight="200px" gutterSize="16px">
+      <mat-grid-tile colspan="1">
+        <mat-card class="feature-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>group</mat-icon>
+            <mat-card-title>Team Management</mat-card-title>
+            <mat-card-subtitle>Manage your team</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>View and manage team members and their activities.</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="accent">Manage Team</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan="1">
+        <mat-card class="feature-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>analytics</mat-icon>
+            <mat-card-title>Reports</mat-card-title>
+            <mat-card-subtitle>Team analytics</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Generate and view team performance reports.</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="accent">View Reports</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan="1">
+        <mat-card class="feature-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>assignment</mat-icon>
+            <mat-card-title>Tasks</mat-card-title>
+            <mat-card-subtitle>Assign and track</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Assign tasks and track team progress.</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="accent">Manage Tasks</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan="1">
+        <mat-card class="feature-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>inventory</mat-icon>
+            <mat-card-title>Inventory</mat-card-title>
+            <mat-card-subtitle>Stock management</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Monitor and manage inventory levels.</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="accent">View Inventory</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan="1">
+        <mat-card class="feature-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>schedule</mat-icon>
+            <mat-card-title>Schedule</mat-card-title>
+            <mat-card-subtitle>Team scheduling</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Manage team schedules and shifts.</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="accent">View Schedule</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan="1">
+        <mat-card class="feature-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>person</mat-icon>
+            <mat-card-title>My Profile</mat-card-title>
+            <mat-card-subtitle>Personal settings</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Update your personal information.</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="accent">Edit Profile</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-card class="welcome-card">
+      <mat-card-header>
+        <mat-card-title>Manager Dashboard</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Hello <strong>{{currentUser?.personName}}</strong>! You're logged in as a <strong>Manager</strong>.</p>
+        <p>Use the management tools above to oversee your team and operations.</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
