@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -8,10 +8,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
-import { HttpClient } from '@angular/common/http';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/auth.service';
+import { AdminService, DashboardStats, User } from '../../services/admin.service';
 import { AuthenticationResponse } from '../../models/auth.models';
-import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -24,21 +25,26 @@ import { environment } from '../../../environments/environment';
     MatToolbarModule,
     MatGridListModule,
     MatListModule,
-    MatTableModule
+    MatTableModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css']
 })
-export class AdminDashboardComponent implements OnInit {
+export class AdminDashboardComponent implements OnInit, AfterViewInit {
   currentUser: AuthenticationResponse | null = null;
-  dashboardStats: any = null;
-  users: any[] = [];
+  dashboardStats: DashboardStats | null = null;
+  recentUsers: User[] = [];
   isLoading = true;
+  viewReady = false;
 
   constructor(
     private authService: AuthService,
+    private adminService: AdminService,
     private router: Router,
-    private http: HttpClient
+    private snackBar: MatSnackBar,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -47,29 +53,36 @@ export class AdminDashboardComponent implements OnInit {
       this.router.navigate(['/user-dashboard']);
       return;
     }
-    this.loadDashboardData();
+    // IMPORTANT: do NOT call loadDashboardData() here
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.viewReady = true;
+      this.loadDashboardData();
+    }, 0);
   }
 
   loadDashboardData(): void {
-    this.http.get(`${environment.apiUrl}/admin/dashboard`).subscribe({
-      next: (data: any) => {
-        this.dashboardStats = data.stats;
-        this.isLoading = false;
+    this.isLoading = true;
+
+    this.adminService.getDashboardStats().subscribe({
+      next: (response: any) => {
+        const stats = response?.stats ?? response?.Stats;
+
+        setTimeout(() => {
+          this.dashboardStats = stats ?? null;
+          this.recentUsers = stats?.recentUsers ?? stats?.RecentUsers ?? [];
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        }, 0);
       },
       error: (error) => {
         console.error('Error loading dashboard:', error);
-        this.isLoading = false;
-      }
-    });
-  }
-
-  loadUsers(): void {
-    this.http.get(`${environment.apiUrl}/admin/users`).subscribe({
-      next: (data: any) => {
-        this.users = data.users;
-      },
-      error: (error) => {
-        console.error('Error loading users:', error);
+        setTimeout(() => {
+          this.snackBar.open('Failed to load dashboard data', 'Close', { duration: 3000 });
+          this.isLoading = false;
+        }, 0);
       }
     });
   }
@@ -80,12 +93,14 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   navigateToUserManagement(): void {
-    // Future implementation for user management
-    console.log('Navigate to user management');
+    this.router.navigate(['/admin/users']);
   }
 
   navigateToSettings(): void {
-    // Future implementation for settings
-    console.log('Navigate to settings');
+    this.router.navigate(['/admin/settings']);
+  }
+
+  navigateToActivityLogs(): void {
+    this.router.navigate(['/admin/activity-logs']);
   }
 }

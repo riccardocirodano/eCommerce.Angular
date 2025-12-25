@@ -54,19 +54,24 @@ export class LoginComponent {
 
     this.authService.login(loginRequest).subscribe({
       next: (response) => {
-        this.isLoading = false;
-        if (response.success) {
-          this.snackBar.open('Login successful!', 'Close', { duration: 3000 });
-          // Navigate to role-specific dashboard
-          const dashboardRoute = this.authService.getUserDashboardRoute();
-          this.router.navigate([dashboardRoute]);
-        } else {
-          this.snackBar.open('Login failed. Please try again.', 'Close', { duration: 3000 });
-        }
+        setTimeout(() => {
+          this.isLoading = false;
+
+          if (response.success) {
+            this.snackBar.open('Login successful!', 'Close', { duration: 3000 });
+
+            const dashboardRoute = this.authService.getUserDashboardRoute();
+            this.router.navigate([dashboardRoute]);
+          } else {
+            this.snackBar.open('Login failed. Please try again.', 'Close', { duration: 3000 });
+          }
+        }, 0);
       },
       error: (error) => {
-        this.isLoading = false;
-        this.snackBar.open(error.error?.message || 'Invalid email or password', 'Close', { duration: 3000 });
+        setTimeout(() => {
+          this.isLoading = false;
+          this.snackBar.open(error.error?.message || 'Invalid email or password', 'Close', { duration: 3000 });
+        }, 0);
       }
     });
   }

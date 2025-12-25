@@ -22,7 +22,7 @@
             <p>View and manage team members and their activities.</p>
           </mat-card-content>
           <mat-card-actions>
-            <button mat-raised-button color="accent">Manage Team</button>
+            <button mat-raised-button color="accent" (click)="goToTeamManagement()">Manage Team</button>
           </mat-card-actions>
         </mat-card>
       </mat-grid-tile>
@@ -38,7 +38,7 @@
             <p>Generate and view team performance reports.</p>
           </mat-card-content>
           <mat-card-actions>
-            <button mat-raised-button color="accent">View Reports</button>
+            <button mat-raised-button color="accent" (click)="goToReports()">View Reports</button>
           </mat-card-actions>
         </mat-card>
       </mat-grid-tile>
@@ -54,7 +54,7 @@
             <p>Assign tasks and track team progress.</p>
           </mat-card-content>
           <mat-card-actions>
-            <button mat-raised-button color="accent">Manage Tasks</button>
+            <button mat-raised-button color="accent" (click)="goToTasks()">Manage Tasks</button>
           </mat-card-actions>
         </mat-card>
       </mat-grid-tile>
@@ -70,7 +70,7 @@
             <p>Monitor and manage inventory levels.</p>
           </mat-card-content>
           <mat-card-actions>
-            <button mat-raised-button color="accent">View Inventory</button>
+            <button mat-raised-button color="accent" (click)="goToInventory()">View Inventory</button>
           </mat-card-actions>
         </mat-card>
       </mat-grid-tile>
@@ -86,7 +86,7 @@
             <p>Manage team schedules and shifts.</p>
           </mat-card-content>
           <mat-card-actions>
-            <button mat-raised-button color="accent">View Schedule</button>
+            <button mat-raised-button color="accent" (click)="goToSchedule()">View Schedule</button>
           </mat-card-actions>
         </mat-card>
       </mat-grid-tile>
@@ -102,7 +102,7 @@
             <p>Update your personal information.</p>
           </mat-card-content>
           <mat-card-actions>
-            <button mat-raised-button color="accent">Edit Profile</button>
+            <button mat-raised-button color="accent" (click)="goToMyProfile()">Edit Profile</button>
           </mat-card-actions>
         </mat-card>
       </mat-grid-tile>

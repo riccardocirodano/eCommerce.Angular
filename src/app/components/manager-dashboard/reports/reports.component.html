@@ -1,0 +1,34 @@
+<mat-toolbar color="accent">
+  <button mat-icon-button (click)="back()" aria-label="Back">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <span>Reports</span>
+</mat-toolbar>
+
+<mat-card class="page-card">
+  <mat-card-title>Reports</mat-card-title>
+  <mat-card-content>
+    <ng-container *ngIf="vm$ | async as vm">
+      <ng-container *ngIf="vm.isLoading">
+        <p>Loading reports…</p>
+      </ng-container>
+
+      <ng-container *ngIf="!vm.isLoading && vm.error">
+        <p><strong>Error:</strong> {{ vm.error }}</p>
+      </ng-container>
+
+      <ng-container *ngIf="!vm.isLoading && !vm.error">
+        <ng-container *ngIf="vm.reports.length; else empty">
+          <div *ngFor="let r of vm.reports; let i = index" style="margin-bottom: 10px;">
+            <div><strong>{{ getPrimaryText(r) }}</strong></div>
+            <div *ngIf="getSecondaryText(r)">{{ getSecondaryText(r) }}</div>
+          </div>
+        </ng-container>
+
+        <ng-template #empty>
+          <p>No reports available.</p>
+        </ng-template>
+      </ng-container>
+    </ng-container>
+  </mat-card-content>
+</mat-card>

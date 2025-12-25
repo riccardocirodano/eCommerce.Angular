@@ -1,0 +1,46 @@
+<mat-toolbar color="accent">
+  <button mat-icon-button (click)="back()" aria-label="Back">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <span>Team Management</span>
+</mat-toolbar>
+
+<mat-card class="page-card">
+  <mat-card-title>Team Management</mat-card-title>
+  <mat-card-content>
+    <ng-container *ngIf="vm$ | async as vm">
+      <ng-container *ngIf="vm.isLoading">
+        <p>Loading team members…</p>
+      </ng-container>
+
+      <ng-container *ngIf="!vm.isLoading && vm.error">
+        <p><strong>Error:</strong> {{ vm.error }}</p>
+      </ng-container>
+
+      <ng-container *ngIf="!vm.isLoading && !vm.error">
+        <ng-container *ngIf="vm.team as team; else empty">
+          <p>
+            <strong>Page:</strong> {{ team.pagination.currentPage }}
+            &nbsp;|&nbsp;
+            <strong>Total:</strong> {{ team.pagination.totalCount }}
+          </p>
+
+          <ng-container *ngIf="team.data.length; else emptyUsers">
+            <div *ngFor="let u of team.data" style="margin-bottom: 10px;">
+              <div><strong>{{ u.personName || u.email }}</strong></div>
+              <div>{{ u.email }}</div>
+            </div>
+          </ng-container>
+
+          <ng-template #emptyUsers>
+            <p>No team members found.</p>
+          </ng-template>
+        </ng-container>
+
+        <ng-template #empty>
+          <p>No team data available.</p>
+        </ng-template>
+      </ng-container>
+    </ng-container>
+  </mat-card-content>
+</mat-card>

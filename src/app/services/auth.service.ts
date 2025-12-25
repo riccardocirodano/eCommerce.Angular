@@ -71,18 +71,46 @@ export class AuthService {
     return null;
   }
 
-  getUserRoles(): string[] {
+    getUserRoles(): string[] {
+    const roles = new Set<string>();
+
+    // 1) Prefer roles already present on the stored user object (if backend includes them)
+    const currentUser = this.getCurrentUser();
+    (currentUser?.roles ?? [])
+      .filter((r): r is string => typeof r === 'string' && r.trim().length > 0)
+      .forEach(r => roles.add(r));
+
+    // 2) Extract from JWT payload (supports common backend claim keys)
     const token = this.getToken();
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        return payload.role ? [payload.role] : payload.roles || [];
-      } catch (error) {
-        console.error('Error decoding token:', error);
-        return [];
+    if (!token) return Array.from(roles);
+
+    try {
+      const base64 = token.split('.')[1];
+      if (!base64) return Array.from(roles);
+
+      const payload = JSON.parse(atob(base64));
+
+      const candidates = [
+        payload.role,
+        payload.roles,
+        payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'],
+        payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role'],
+      ];
+
+      for (const value of candidates) {
+        if (Array.isArray(value)) {
+          value
+            .filter((r): r is string => typeof r === 'string' && r.trim().length > 0)
+            .forEach(r => roles.add(r));
+        } else if (typeof value === 'string' && value.trim().length > 0) {
+          roles.add(value);
+        }
       }
+    } catch (error) {
+      console.error('Error decoding token:', error);
     }
-    return [];
+
+    return Array.from(roles);
   }
 
   hasRole(role: string): boolean {

@@ -51,4 +51,28 @@ export class ManagerDashboardComponent implements OnInit {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+
+  goToTeamManagement(): void {
+    this.router.navigate(['/manager/team']);
+  }
+
+  goToReports(): void {
+    this.router.navigate(['/manager/reports']);
+  }
+
+  goToTasks(): void {
+    this.router.navigate(['/manager/tasks']);
+  }
+
+  goToInventory(): void {
+    this.router.navigate(['/manager/inventory']);
+  }
+
+  goToSchedule(): void {
+    this.router.navigate(['/manager/schedule']);
+  }
+
+  goToMyProfile(): void {
+    this.router.navigate(['/manager/profile']);
+  }
 }

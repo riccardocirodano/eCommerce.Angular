@@ -1,0 +1,34 @@
+<mat-toolbar color="accent">
+  <button mat-icon-button (click)="back()" aria-label="Back">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <span>Tasks</span>
+</mat-toolbar>
+
+<mat-card class="page-card">
+  <mat-card-title>Tasks</mat-card-title>
+  <mat-card-content>
+    <ng-container *ngIf="vm$ | async as vm">
+      <ng-container *ngIf="vm.isLoading">
+        <p>Loading tasks…</p>
+      </ng-container>
+
+      <ng-container *ngIf="!vm.isLoading && vm.error">
+        <p><strong>Error:</strong> {{ vm.error }}</p>
+      </ng-container>
+
+      <ng-container *ngIf="!vm.isLoading && !vm.error">
+        <ng-container *ngIf="vm.tasks.length; else empty">
+          <div *ngFor="let t of vm.tasks; let i = index" style="margin-bottom: 10px;">
+            <div><strong>{{ getPrimaryText(t) }}</strong></div>
+            <div *ngIf="getSecondaryText(t)">{{ getSecondaryText(t) }}</div>
+          </div>
+        </ng-container>
+
+        <ng-template #empty>
+          <p>No tasks available.</p>
+        </ng-template>
+      </ng-container>
+    </ng-container>
+  </mat-card-content>
+</mat-card>

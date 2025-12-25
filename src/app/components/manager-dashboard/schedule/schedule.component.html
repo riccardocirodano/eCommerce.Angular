@@ -1,0 +1,38 @@
+<mat-toolbar color="accent">
+  <button mat-icon-button (click)="back()" aria-label="Back">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <span>Schedule</span>
+</mat-toolbar>
+
+<mat-card class="page-card">
+  <mat-card-title>Schedule</mat-card-title>
+  <mat-card-content>
+    <ng-container *ngIf="vm$ | async as vm">
+      <ng-container *ngIf="vm.isLoading">
+        <p>Loading schedule…</p>
+      </ng-container>
+
+      <ng-container *ngIf="!vm.isLoading && vm.error">
+        <p><strong>Error:</strong> {{ vm.error }}</p>
+      </ng-container>
+
+      <ng-container *ngIf="!vm.isLoading && !vm.error">
+        <ng-container *ngIf="vm.schedule.length; else empty">
+          <div *ngFor="let s of vm.schedule; let i = index" style="margin-bottom: 10px;">
+              <div><strong>{{ getTitle(s) }}</strong></div>
+            <div>
+                {{ getStart(s) ? (getStart(s) | date: 'medium') : '—' }}
+              &nbsp;→&nbsp;
+                {{ getEnd(s) ? (getEnd(s) | date: 'medium') : '—' }}
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-template #empty>
+          <p>No schedule available.</p>
+        </ng-template>
+      </ng-container>
+    </ng-container>
+  </mat-card-content>
+</mat-card>

@@ -9,7 +9,7 @@
     </button>
   </mat-toolbar>
 
-  <div class="dashboard-content" *ngIf="!isLoading">
+  <div class="dashboard-content" *ngIf="viewReady && !isLoading">
     <mat-grid-list cols="4" rowHeight="200px" gutterSize="16px">
       <!-- Stats Cards -->
       <mat-grid-tile colspan="1">
@@ -32,7 +32,7 @@
           </mat-card-header>
           <mat-card-content>
             <div class="stat-value">
-              {{dashboardStats?.usersByRole?.Admin || 0}}
+              {{dashboardStats?.usersByRole?.['Admin'] || 0}}
             </div>
           </mat-card-content>
         </mat-card>
@@ -45,7 +45,7 @@
           </mat-card-header>
           <mat-card-content>
             <div class="stat-value">
-              {{dashboardStats?.usersByRole?.Manager || 0}}
+              {{dashboardStats?.usersByRole?.['Manager'] || 0}}
             </div>
           </mat-card-content>
         </mat-card>
@@ -58,7 +58,7 @@
           </mat-card-header>
           <mat-card-content>
             <div class="stat-value">
-              {{dashboardStats?.usersByRole?.User || 0}}
+              {{dashboardStats?.usersByRole?.['User'] || 0}}
             </div>
           </mat-card-content>
         </mat-card>
@@ -75,13 +75,17 @@
               <mat-icon>people</mat-icon>
               Manage Users
             </button>
-            <button mat-raised-button color="accent" (click)="loadUsers()">
+            <button mat-raised-button color="accent" (click)="loadDashboardData()">
               <mat-icon>refresh</mat-icon>
               Refresh Data
             </button>
             <button mat-raised-button (click)="navigateToSettings()">
               <mat-icon>settings</mat-icon>
               System Settings
+            </button>
+            <button mat-raised-button color="warn" (click)="navigateToActivityLogs()">
+              <mat-icon>list</mat-icon>
+              Activity Logs
             </button>
           </mat-card-content>
         </mat-card>
@@ -94,14 +98,14 @@
             <mat-card-title>Recent Users</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <mat-list *ngIf="dashboardStats?.recentUsers?.length > 0">
-              <mat-list-item *ngFor="let user of dashboardStats.recentUsers">
+            <mat-list *ngIf="recentUsers && recentUsers.length > 0">
+              <mat-list-item *ngFor="let user of recentUsers">
                 <mat-icon matListItemIcon>person</mat-icon>
                 <h4 matListItemTitle>{{user.personName}}</h4>
                 <p matListItemLine>{{user.email}}</p>
               </mat-list-item>
             </mat-list>
-            <p *ngIf="!dashboardStats?.recentUsers?.length" class="no-data">
+            <p *ngIf="!recentUsers || recentUsers.length === 0" class="no-data">
               No recent users
             </p>
           </mat-card-content>
@@ -110,7 +114,7 @@
     </mat-grid-list>
   </div>
 
-  <div class="loading-container" *ngIf="isLoading">
+  <div class="loading-container" *ngIf="!viewReady || isLoading">
     <mat-icon class="loading-spinner">refresh</mat-icon>
     <p>Loading dashboard data...</p>
   </div>
