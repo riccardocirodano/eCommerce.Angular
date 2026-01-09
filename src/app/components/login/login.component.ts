@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -10,6 +10,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/auth.service';
 import { LoginRequest } from '../../models/auth.models';
+import { asyncScheduler, finalize, observeOn, take } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +37,8 @@ export class LoginComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private cdr: ChangeDetectorRef
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -45,18 +47,25 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-    if (this.loginForm.invalid) {
-      return;
-    }
+    if (this.loginForm.invalid || this.isLoading) return;
 
     this.isLoading = true;
-    const loginRequest: LoginRequest = this.loginForm.value;
 
-    this.authService.login(loginRequest).subscribe({
-      next: (response) => {
-        setTimeout(() => {
+    const loginRequest = this.loginForm.getRawValue() as LoginRequest;
+
+    this.authService
+      .login(loginRequest)
+      .pipe(
+        take(1),
+        // Ensure emissions happen async to avoid NG0100 in dev mode
+        observeOn(asyncScheduler),
+        finalize(() => {
           this.isLoading = false;
-
+          this.cdr.markForCheck();
+        })
+      )
+      .subscribe({
+        next: (response) => {
           if (response.success) {
             this.snackBar.open('Login successful!', 'Close', { duration: 3000 });
 
@@ -65,15 +74,15 @@ export class LoginComponent {
           } else {
             this.snackBar.open('Login failed. Please try again.', 'Close', { duration: 3000 });
           }
-        }, 0);
-      },
-      error: (error) => {
-        setTimeout(() => {
-          this.isLoading = false;
-          this.snackBar.open(error.error?.message || 'Invalid email or password', 'Close', { duration: 3000 });
-        }, 0);
-      }
-    });
+        },
+        error: (error) => {
+          this.snackBar.open(
+            error?.error?.message || 'Invalid email or password',
+            'Close',
+            { duration: 3000 }
+          );
+        }
+      });
   }
 
   getErrorMessage(field: string): string {
